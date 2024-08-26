@@ -1,0 +1,526 @@
+
+/* Petites hauteurs */
+@media (max-height: 800px) {
+	body {
+		font-size: 15px;
+		line-height: 24px;
+	}
+	.headerContenu:not(:has(.blocSommaire)) .blocTitre {
+    margin-top: 30px;
+	}
+	.headerContenu .blocTitre {
+		padding-top: 20px;
+	}
+	.listeSommaire {
+		font-size: 16px;
+		line-height: 24px;
+	}
+}
+
+
+/*@media (min-width: 1440px) {*/
+@media (min-width: 1440px) {
+	.contenuPage {
+			margin-top: 90px;
+	}
+	.ongletsPrincipaux {
+		margin-left: unset;
+		margin-right: unset;
+		width: calc(100vw - 620px);
+	}
+	.headerPageHtml {
+		display: none;
+	}
+	.moduleOnglets {
+		top: 22px;
+		left: 623px;
+		z-index: 100;
+		box-shadow: unset !important;
+	}
+	.onglets {
+		border-radius: 5px 0px 0px 0px;
+	}
+	.onglets .input {
+		width: 250px;
+		max-width: calc(100vw - 1320px);
+	}
+}
+
+
+/* Volet de gauche */
+@media (min-width: 1600px) {
+	.moduleNews + .moduleListeNewsRecentes,
+	.moduleGlossaire + .moduleListeNewsRecentes,
+	.moduleArticle + .moduleDerniersDeals,
+	.moduleDeals + .moduleDerniersDeals {
+		position: fixed;
+		left: 0px;
+		top: 40px;
+		width: calc(100vw - 1250px - 110px);
+		max-width: 560px;
+		border-radius: 0px !important;
+		height: calc(100vh - 70px);
+		overflow-y: scroll; 
+		scrollbar-width: none; /* Firefox */
+		padding-right: 50px; /* pour la fleche */
+		margin-right: -50px;
+		background-color: transparent !important;
+	}
+	.moduleNews + .moduleListeNewsRecentes::-webkit-scrollbar,
+	.moduleGlossaire + .moduleListeNewsRecentes::-webkit-scrollbar,
+	.moduleArticle + .moduleDerniersDeals::-webkit-scrollbar,
+	.moduleDeals + .moduleDerniersDeals::-webkit-scrollbar {
+		display: none; /* Chrome, Safari, Opera */
+	}
+	.moduleNews + .moduleListeNewsRecentes .titres,
+	.moduleGlossaire + .moduleListeNewsRecentes .titres,
+	.moduleArticle + .moduleDerniersDeals .titres,
+	.moduleDeals + .moduleDerniersDeals .titres {
+		background-color: #FFF;
+		border: unset;
+	}
+	.moduleNews + .moduleListeNewsRecentes .listeTitres,
+	.moduleGlossaire + .moduleListeNewsRecentes .listeTitres,
+	.moduleArticle + .moduleDerniersDeals .listeTitres,
+	.moduleDeals + .moduleDerniersDeals .listeTitres {
+		padding-bottom: 180px;
+		padding-top: 20px;
+	}
+	.moduleNews + .moduleListeNewsRecentes .titres:has(.pageActuelle),
+	.moduleGlossaire + .moduleListeNewsRecentes .titres:has(.pageActuelle),
+	.moduleArticle + .moduleDerniersDeals .titres:has(.pageActuelle),
+	.moduleDeals + .moduleDerniersDeals .titres:has(.pageActuelle) {
+		background-color: #EFE;
+	}
+	.moduleNews + .moduleListeNewsRecentes .titres:has(.pageActuelle):hover,
+	.moduleGlossaire + .moduleListeNewsRecentes .titres:has(.pageActuelle):hover,
+	.moduleArticle + .moduleDerniersDeals .titres:has(.pageActuelle):hover,
+	.moduleDeals + .moduleDerniersDeals .titres:has(.pageActuelle):hover {
+		transform: translateX(10px) !important;
+	}
+	.moduleNews + .moduleListeNewsRecentes .pageActuelle,
+	.moduleGlossaire + .moduleListeNewsRecentes .pageActuelle,
+	.moduleArticle + .moduleDerniersDeals .pageActuelle,
+	.moduleDeals + .moduleDerniersDeals .pageActuelle {
+		color: #090;
+	}
+	.moduleNews + .moduleListeNewsRecentes .titres:has(.pageActuelle):after,
+	.moduleGlossaire + .moduleListeNewsRecentes .titres:has(.pageActuelle):after,
+	.moduleArticle + .moduleDerniersDeals .titres:has(.pageActuelle):after,
+	.moduleDeals + .moduleDerniersDeals .titres:has(.pageActuelle):after {
+		content: '';
+    position: absolute;
+    top: 4px;
+    right: -70px;
+    width: 0;
+    height: 0;
+    border: 51px solid transparent;
+    border-left: 20px solid #EFE;
+	}
+	.moduleNews + .moduleListeNewsRecentes .iconeCommentaires,
+	.moduleGlossaire + .moduleListeNewsRecentes .iconeCommentaires,
+	.moduleArticle + .moduleDerniersDeals .entete2,
+	.moduleDeals + .moduleDerniersDeals .entete2 {
+		display: none;
+	}
+
+	.moduleNews + .moduleListeNewsRecentes .footerModuleCentreBas,
+	.moduleDeals + .moduleDerniersDeals .footerModuleCentreBas,
+	.moduleArticle + .moduleDerniersDeals .footerModuleCentreBas,
+	.moduleGlossaire + .moduleListeNewsRecentes .footerModuleCentreBas {
+		bottom: unset;
+		left: unset;
+		margin-left: calc(50% - 22px);
+		margin-top: -170px;
+	}
+
+	.paramNews .contenuPage,
+	.paramDefinition .contenuPage,
+	.paramArticle .contenuPage,
+	.paramDeal .contenuPage {
+			margin-left: calc(100vw - 1250px - 45px) !important;
+	}
+}
+
+@media (min-width: 1921px) {
+	.paramNews .contenuPage,
+	.paramDefinition .contenuPage,
+	.paramArticle .contenuPage,
+	.paramDeal .contenuPage {
+		margin-left: calc((100vw - 670px)/2) !important;
+		/*margin-right: auto !important;*/
+	}
+
+	.moduleNews + .moduleListeNewsRecentes,
+	.moduleGlossaire + .moduleListeNewsRecentes,
+	.moduleArticle + .moduleDerniersDeals,
+	.moduleDeals + .moduleDerniersDeals {
+		margin-left: calc((100vw - 1250px - 670px)/2) !important;
+	}
+
+	.moduleOnglets {
+		left: calc((100vw - 1250px - 625px)/2 + 602px);
+	}
+}
+
+/* Responsive content CONTENU */
+@media (max-width: 990px) {
+
+	/* Menu onglets et liste déroulante */
+	#menu > li {
+		width: calc((100% - 225px)/4);
+	}
+	#menu > li:nth-child(1) > .ongletBloc > a, #menu > li:nth-child(2) > .ongletBloc > a {
+		pointer-events: none;
+	}
+
+	#menu > li:nth-child(1):hover .boutonFermer, #menu > li:nth-child(2):hover .boutonFermer {
+		visibility: visible;
+		opacity: 1;
+		transition-delay: 0.3s;
+	}
+	#menu .boutonFermer:hover {
+		color: transparent;
+		transition-delay: 0s !important;
+	}
+
+	#menu .ongletBlocColonnes {
+		display: block;
+	}
+	#menu .ongletColonne {
+		padding-bottom: 10px;
+	}
+
+
+	/* Recherche réduite */
+	.recherche .input {
+		display: none;
+	}
+
+
+
+	/* 1 colonne: tous les modules à 100% */
+	.nbColonnes1 .module, .moduleConteneur {
+		width: calc(100% - 30px);
+	}
+
+	.moduleListeCategorieNews .blocCategorieNews {
+		width: 100% !important;
+	}
+
+	.moduleConteneur .conteneurGauche, .moduleConteneur .conteneurDroite {
+		max-width: 100%;
+		width: calc(100% - 0.01px) !important; /* surcharge le width sur .module */
+	}
+
+	.colonneCentrale {
+		max-width: 100%;
+		width: calc(100% - 0.01px) !important; /* surcharge le width sur .module */
+	}
+	.colonneDroite {
+		position: relative !important;
+		top: unset !important;
+		overflow-x: hidden;
+	}
+	.moduleUnes .cadreImageTexte {
+		margin-bottom: 2px;
+		min-height: 150px;
+		height: 20vh;
+	}
+	.moduleUnes .cadreImageTexte:last-child {
+		float:right;
+	}
+	.moduleListeDefinitions .cadreImageTexte {
+		width: calc((100% - 15px)/ 2);
+	}
+	.moduleListeDossiersRecents .cadreImageTexte {
+		width: calc((100% - 15px)/ 2);
+	}
+	.moduleBoutique2Encart .cadreImageTexte {
+		width: calc((100% - 30px)/ 3);
+	}
+
+
+	/* page avec colonne de droite */
+	.colonneCentrale:not(:last-child) {
+		width: 100% !important;
+	}
+	.colonneDroite {
+		width: 100% !important;
+		margin-top: 40px !important;
+		position: relative;
+		top: unset;
+	}
+	.colonneDroite .module {
+		width: calc(100% - 20px);
+		border: unset;
+		padding: 0px 10px;
+	}
+	.colonneDroite .titres {
+		width: calc(100% - 10px) !important;
+		/*margin: 0px !important;*/
+		padding: 10px 5px !important;
+	}
+	 .titres:hover {
+		transform: none !important;
+	}
+	.moduleSuggestionNews .cadreImageTexte {
+		width: calc(100% / 2 - 10px);
+	}
+	.headerModuleCentre .headerModuleCentreDroite {
+		font-size: 30px !important;
+		line-height: 30px !important;
+		right: unset;
+		bottom:0;
+	}
+	.headerContenu .blocTitre {
+    float: left;
+    width: calc(100% - 40px);
+    padding: 0px 20px 0px 20px;
+  }
+  .blocSommaire {
+  	border-radius: 20px;
+  	border-right: solid 5px #FFF;
+  	margin: -20px -30px 0px 0px;
+  	width: calc(100% + 50px);
+  	padding-right: unset;
+}
+
+	/* icone suivant passe en bas */
+	.footerModuleCentreDroite, .footerModuleCentreGauche {
+		bottom:-10px !important;
+		top: unset !important;
+		left: 50% !important;
+		right: unset !important;
+		transform: translateX(-50%) rotate(90deg);
+	}
+}
+
+
+@media (max-width: 1100px) {
+	.blocCalendrier, .blocCategories,
+	.blocCalendrier table, .blocCategories table {
+		width:100%;
+	}
+	.blocCalendrier {
+		padding-bottom: 30px;
+	}
+	.moduleCoupons .titresDetailles {
+		width:calc(100% - 20px) !important;
+	}
+	.moduleCoupons .quarite0, .moduleCoupons .quarite2 {
+		background-color: white !important;
+	}
+	.moduleCoupons .quarite1, .moduleCoupons .quarite3 {
+		background-color: #E8F0FF !important;
+	}
+}
+
+
+/* Redimentionne la colonne centrale si deux colonnes */
+@media (max-width: 720px) {
+	.blocSommaire {
+		width: 100%;
+		margin: 0px 0px 10px 0px;
+		border: unset;
+		border-radius: 10px;
+	}
+	.boutonsProduit {
+		flex-direction: column;
+	}
+	.boutonProduit {
+		width: 100% !important;
+		margin: 0 !important;
+	}
+	.titreSommaire {
+		font-size: 24px !important;
+	}
+	.listeSommaire {
+		font-size: 16px !important;
+		line-height: 24px !important;
+	}
+
+	.moduleHeaderPage {
+		background-image: none !important;
+		background-color: #06D !important;
+	}
+	.headerPageHtml, .cc-window {
+		display: none !important;
+	}
+	.headerPageLogo {
+		text-align: center;
+		width: 100%;
+		margin: 0px;
+	}
+
+	/* Onglets */
+	#menu > li {
+		width: calc((100% - 125px)/4);
+	}
+	.ongletLibelle, .deroule {
+		display: none;
+	}
+	.ongletsPrincipaux {
+		margin-left: unset !important;
+	}
+	.onglets {
+		font-size: 14px;
+	}
+
+}
+
+@media (max-width: 600px) {
+	.listeParticipations a {
+		margin-left: 0px !important;
+	}
+	.headerContenu .blocTitre {
+		padding: 20px 10px 0px 10px;
+		width: calc(100% - 20px);
+		font-size: 15px;
+		border-radius: unset;
+	}
+	.sommaireBasArticle, .sommaireHautArticle {
+		margin-left: -10px;
+		margin-right: -10px;
+		width: calc(100% + 20px);
+		border-radius: unset;
+	}
+
+	.avertissementBG {
+		margin-top: -208px !important;
+		margin-left: -187px !important;
+		width: 344px !important;
+	}
+	.avertissementBG img {
+		width: 340px !important;
+		height: 258px !important;
+	}
+	.contenuPage {
+		border-radius: unset !important;
+		margin-top: 70px;
+		width: 100vw;
+	}
+	.colonneCentrale .module, .colonneDroite .module, .colonneDroite iframe {
+		border-radius: unset !important;
+	}
+
+	.contenuPage {
+		margin-left: unset !important;
+		margin-right: unset !important;
+	}
+	.conteneurDroite {
+		display: none;
+	}
+	.moduleUnes .cadreImageTexte {
+		margin-bottom: 0px;
+		height: 220px;
+		width:100%;
+	}
+	.moduleUnes .cadreImageTexte .texte {
+		width: auto;
+	}
+	.news, .deals, .glossaire, .article {
+		width: 100%;
+		padding: unset;
+	}
+	.texte {
+		font-size: 18px;
+		line-height: 28px;
+	}
+	.moduleBoutique2Encart .cadreImageTexte {
+		width: calc((100% - 15px)/ 2);
+	}
+	.colonneCentrale .titresDetailles .image {
+		width:70px;
+	}
+	.colonneCentrale .titresDetailles .image img {
+		max-width:70px;
+		max-height:70px;
+	}
+	.alignleft, .alignright {
+		float: unset !important;
+	}
+	.encadreleft.encadrePub {
+		margin: 0px auto 20px auto !important;
+	}
+	.encadreleft:not(.encadrePub), .encadreright:not(.encadrePub) {
+		margin: 0px 0px 10px 0px !important;
+		width: 100% !important;
+	}
+	.moduleGlossaire .thumb .thumbinner,
+	.moduleGlossaire .infobox_v2 {
+		width: 100% !important;
+	}
+	.moduleGlossaire .thumb {
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+}
+
+@media (max-width: 550px) {
+	.titre > h1 {
+		font-size: 24px;
+		line-height: 32px;
+		display: block;
+	}
+
+	.headerPageLogo {
+		font-size: 30px;
+		padding-top: 7px;
+		width: 100%;
+		min-width: 300px;
+	}
+	.entete, .entete a {
+		font-size: 11px !important;
+	}
+
+
+	/* On suprime le menu encyclopédie */
+/*
+	#menu > li {
+		width: calc((100% - 120px)/2);
+	}
+	#menu > li:nth-child(3) {
+		display: none;
+	}
+	#menu > li:nth-child(4) {
+		display: none;
+	}
+*/
+	.ongletBloc > a {
+		font-size: 12px;
+	}
+	.encadreCoupon .texte {
+		font-size: unset !important;
+		line-height: unset !important;
+		/*width: 100% !important;*/
+	}
+/*
+	.encadreCoupon .image {
+		width: 100% !important;
+		height: unset !important;
+		max-width: unset !important;
+		max-height: unset !important;
+		margin-right: unset !important;
+	}
+	.encadreCoupon .image img {
+		width: 100% !important;
+	}
+*/
+	.moduleBoutique2Encart .cadreImageTexte,
+	.moduleListeDefinitions .cadreImageTexte,
+	.moduleListeDossiersRecents .cadreImageTexte {
+		width: 100%;
+	}
+	.encadreleft:not(.encadrePub), .encadreright:not(.encadrePub) {
+		margin: 0px 0px 10px 0px !important;
+		width: 100% !important;
+	}
+	.listeParticipationsBas .sharethis {
+		width: unset !important;
+	}
+	.relatif .cadreImageTexte {
+		width: 100% !important;
+		height: 180px;
+	}
+}

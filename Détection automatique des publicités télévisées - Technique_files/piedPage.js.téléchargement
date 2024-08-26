@@ -1,0 +1,280 @@
+/************** fonctions Lazy loading **************/
+
+/* Lazy load sur event (avec listener) */
+if('addEventListener' in window) {	// addEventListener compatible : lazyload
+	window.addEventListener("mouseover", lazyloadEvent);
+	window.addEventListener("scroll", lazyloadEvent);
+	window.addEventListener("touchstart", lazyloadEvent);
+	function lazyloadEvent() {
+		window.removeEventListener("mouseover", lazyloadEvent);
+		window.removeEventListener("scroll", lazyloadEvent);
+		window.removeEventListener("touchstart", lazyloadEvent);
+
+		// Affiche les elements lazy event
+		var tabLazyElt = document.querySelectorAll('[lazyload="event"]');
+		while(tabLazyElt.length > 0) {
+			lazyloadBloc(tabLazyElt[0]);
+			tabLazyElt = document.querySelectorAll('[lazyload="event"]');
+		}
+	}
+}
+else {	// addEventListener incompatible : tout afficher immediatement
+	document.querySelectorAll('[lazyload="event"]').forEach(elt => {lazyloadBloc(elt);});
+}
+
+
+/* Lazy load sur view (avec observer) */
+if('IntersectionObserver' in window /*&& !/Edg/.test(navigator.userAgent)*/) {	// IntersectionObserver compatible : lazyload (pas Edge pour l'instant)
+	var callback = function(entries, observer) {
+		entries.forEach(entry => {
+			if(!entry.isIntersecting) return;
+			observer.unobserve(entry.target);
+			lazyloadBloc(entry.target);		// Affiche les elements lazy view
+		});
+	};
+	var options = {root: null, rootMargin: "200px", threshold: 0}
+	var observer = new IntersectionObserver(callback, options);
+	document.querySelectorAll('[lazyload="view"]').forEach(elt => {observer.observe(elt);});
+}
+else {	// IntersectionObserver incompatible : tout afficher immediatement
+	document.querySelectorAll('[lazyload="view"]').forEach(elt => {lazyloadBloc(elt);});
+}
+
+
+/* Lazy load sur bloc avec commentaire --lazy-- */
+function lazyloadBloc(elt) {
+	elt.removeAttribute("lazyload");
+	elt.innerHTML = elt.innerHTML.replace('<!--lazy', '').replace('lazy-->', '')
+						.replace('<script ', '<script lazyload="js" ').replace('<script>', '<script lazyload="js">');
+//console.log('lazyload BLOC : '+elt.innerHTML);
+console.log('lazyload BLOC');
+
+	// Execute les js qui ont été dévoilés
+	var eltJS;
+	var eltJSinitial;
+	var tabLazyJS = document.querySelectorAll('[lazyload="js"]');
+console.log('lazyload lenght '+tabLazyJS.length);
+	while(tabLazyJS.length > 0) {
+		eltJSinitial = tabLazyJS[0];
+		eltJS = document.createElement("script");
+		eltJS.setAttribute("type", "text/javascript");
+		if(eltJSinitial.src != '') {
+			eltJS.setAttribute("src", eltJSinitial.src);
+console.log('lazyloadJS SRC : '+eltJS.src);
+		}
+		else if(eltJSinitial.text != '') {
+			eltJS.text = eltJSinitial.text;
+console.log('lazyloadJS TEXT');
+		}
+
+		eltJSinitial.parentNode.replaceChild(eltJS, eltJSinitial);
+		tabLazyJS = document.querySelectorAll('[lazyload="js"]');
+	}
+}
+
+
+/************** Blur sur la liste des promos **************/
+// Redirections
+if(document.getElementById("listePromosMsg")) {
+	fetch(serviceLocUrl("isIF_MR"))
+		.then(response => response.text())
+		.then(respText => {
+			if(respText == 'true' && (getAnchor() == null || getAnchor() == "listePromosDirect")) {
+			//if(false) {
+				document.getElementById("listePromosMsg").style.display = "block";
+				document.getElementById("listePromosDetail").style.filter = "blur(5px)";
+				document.getElementById("listePromosDetail").style.cursor = "pointer";
+				document.getElementById("listePromosDetail").style.marginTop = "-160px";
+			}
+			else {
+				document.getElementById("listePromosMsg").onclick = "unset";
+				document.getElementById("listePromosDetail").onclick = "unset";
+			}
+		});
+}
+
+function listePromosClick(lpdurl, url = (window.location.toString().split('#')[0])+"#listePromos") {
+	window.open(url, "_blank");
+	window.location = lpdurl;
+}
+
+function getAnchor() {
+    return (document.URL.split('#').length > 1) ? document.URL.split('#')[1] : null;
+}
+
+
+
+/************** choix changement langue **************/
+document.addEventListener('DOMContentLoaded', function() {
+    const userLang = (navigator.language || navigator.userLanguage).toUpperCase(); 
+    const langPrefix = userLang.split('-')[0];
+    if(langPrefix == document.documentElement.lang.toUpperCase()) return;
+
+    const tabMessages = {
+        FR: "<a id='alang' href='https://www.techno-science.net/'>   <span class='flag-icon flag-icon-fr'></span><span id='textVersion'> &nbsp;Disponible en français</span></a>",
+        EN: "<a id='alang' href='https://www.techno-science.net/en/'><span class='flag-icon flag-icon-gb'></span><span id='textVersion'> &nbsp;Available in English</span></a>",
+        DE: "<a id='alang' href='https://www.techno-science.net/de/'><span class='flag-icon flag-icon-de'></span><span id='textVersion'> &nbsp;Verfügbar auf Deutsch</span></a>",
+        ES: "<a id='alang' href='https://www.techno-science.net/es/'><span class='flag-icon flag-icon-es'></span><span id='textVersion'> &nbsp;Disponible en español</span></a>",
+        PT: "<a id='alang' href='https://www.techno-science.net/pt/'><span class='flag-icon flag-icon-pt'></span><span id='textVersion'> &nbsp;Disponível em português</span></a>"
+    };
+
+    const links = document.querySelectorAll('link[rel="alternate"]');
+    let targetUrl = '';
+
+    links.forEach(link => {
+        if(link.getAttribute('hreflang') && link.getAttribute('hreflang').toUpperCase() === langPrefix) {
+            targetUrl = link.getAttribute('href');
+        }
+    });
+
+    if(targetUrl && tabMessages[langPrefix]) {
+		const popup = document.createElement('div');
+		popup.id = 'language-popup';
+		popup.setAttribute('style', 'width: fit-content; max-width: 90vw; background-color: white; border: 1px solid #ddd; border-radius: 24px 0px 0px 24px; margin-right: -1px; padding: 10px 10px 10px 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); z-index: 100; position: fixed; top: 100px; right: 0; font-size: 22px; font-weight: bold');
+		popup.innerHTML = tabMessages[langPrefix];
+
+		const headerPage = document.querySelector('.contenuPage');
+		if(headerPage) {
+		    headerPage.prepend(popup);
+		    document.getElementById('alang').setAttribute('href', targetUrl);
+
+		    // Reduit la div au scroll
+		    window.addEventListener('scroll', function() {
+				document.getElementById('textVersion').style.display = 'none';
+		    });
+		}
+    }
+});
+
+
+/* Voir aussi coté assemblagePage */
+/************** adb **************
+function adbClick() { // click sur msg adb
+	// Ne plus vérifier pendant X heures
+	var cookieDate = new Date();
+	cookieDate.setTime(cookieDate.getTime() + 20*3600*1000); // 20h
+	document.cookie = 'adbVerif=1; Path=/; Expires=' + cookieDate.toUTCString(); 
+
+	// Redirections
+	fetch(serviceLocUrl("adbRedir"))
+		.then(response => response.text())
+		.then(urlRedir => {
+			window.open(window.location.toString(), "_blank");
+			window.location = urlRedir;
+		});
+}
+window.onload = function() {
+	setTimeout(function() {
+		let adbMsgBgElt = document.getElementById("adbMsgBackground");
+		if(adbMsgBgElt && document.cookie.indexOf('adbVerif=') == -1) { // Pas de cookie => verifie presence ou non d'adb
+			fetch("//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?"+Date.now(), {method: 'HEAD'}).catch(function() {
+				console.log("adb detected");
+				fetch(serviceLocUrl("isIF_MR"))
+					.then(response => response.text())
+					.then(result => {
+						if(result == "true") {
+							adbMsgBgElt.style.display = "block";
+							document.getElementById("adbMsg").style.display = "block";
+						}
+					});
+			});
+		}
+	}, 2000);
+}
+*/
+
+
+/************** cst **************/
+const csttxts = {
+    pourquoi: {
+        entete: "🍪 Pourquoi autoriser les cookies ?",
+        contenu1: "Vous proposer des nouveaux services, contenus et publicités personnalisés, mesure de performance et étude d’audience",
+        contenu2: "Les cookies ne perturberont pas le fonctionnement de vos appareils"
+    },
+    advertisements: {
+        entete: "🍪 Why cookies?",
+        contenu1: "Offering you new services, personalized content and ads, performance measurement and audience studies",
+        contenu2: "Cookies will not disrupt the operation of your devices"
+    },
+	werbung: {
+	    entete: "🍪 Warum Cookies?",
+	    contenu1: "Bieten Ihnen neue Dienste, personalisierte Inhalte und Anzeigen, Leistungsmessung und Publikumsforschung",
+	    contenu2: "Cookies werden den Betrieb Ihrer Geräte nicht beeinträchtigen"
+	},
+    publicidad: {
+        entete: "🍪 ¿Por qué las cookies?",
+        contenu1: "Ofrecerte nuevos servicios, contenido y anuncios personalizados, medición de rendimiento e investigación de audiencia",
+        contenu2: "Las cookies no interrumpirán el funcionamiento de tus dispositivos"
+    },
+	publicidade: {
+	    entete: "🍪 Por que os cookies?",
+	    contenu1: "Oferecer novos serviços, conteúdos e anúncios personalizados, medição de desempenho e estudos de público",
+	    contenu2: "Os cookies não perturbarão o funcionamento dos seus dispositivos"
+	}
+};
+const observercst = new MutationObserver(function(mutationsList, observer) {
+    for(let mutation of mutationsList) {
+        if(mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            mutation.addedNodes.forEach(function(addedNode) {
+                if(addedNode.nodeName === 'DIV' && addedNode.classList.contains('fc-consent-root')) {
+                	eltEntete = document.querySelector('[class="fc-dialog-headline"]');
+
+					if(dividerNode = document.querySelector('.fc-footer-buttons-divider'))
+					    dividerNode.remove();
+					if(btnp = document.querySelector('.fc-primary-button > .fc-button-background'))
+						btnp.style.setProperty('border', '1px solid #06D', 'important');
+					if(btns = document.querySelector('.fc-secondary-button > .fc-button-background'))
+						btns.style.setProperty('border', '1px solid #06D', 'important');
+					if(dialogContent = document.querySelectorAll('.fc-dialog-content')[0])
+						dialogContent.style.setProperty('padding-bottom', '20px', 'important');
+
+                	// Quelle langue est utilisée ?
+				    let keylng = null;
+					for(keylng in csttxts) {
+					    if(eltEntete && eltEntete.textContent.toLowerCase().includes(keylng)) break;
+					    keylng = null;
+					}
+
+					// Une langue est détectée
+                	if(keylng) {
+						addedNode.style.setProperty('height', '0px', 'important');
+						fetch(serviceLocUrl("isMR"))
+							.then(response => response.text())
+							.then(result => {
+								if(result == "true") {
+									if( (footerNode = document.querySelector('.fc-footer')) && (faqContentsNode = document.querySelector('.fc-faq-contents')) )
+									    faqContentsNode.appendChild(footerNode);
+
+									eltEntete.textContent = csttxts[keylng].entete;
+									if(elt0 = document.querySelectorAll('.fc-stack-name')[0])
+										elt0.textContent = csttxts[keylng].contenu1;
+									if(elt1 = document.querySelectorAll('.fc-stack-name')[1])
+										elt1.textContent = csttxts[keylng].contenu2;
+
+									addedNode.style.setProperty('height', '100%', 'important');
+									fc-dialog-content
+								}
+								addedNode.style.setProperty('height', '100%', 'important');
+							});
+					}
+                }
+                if(addedNode.nodeName === 'DIV' && addedNode.classList.contains('google-revocation-link-placeholder')) {
+                	addedNode.style.setProperty('bottom', '30px', 'important');
+                }
+            });
+        }
+    }
+});
+const targetNode = document.body;
+const config = { childList: true };
+observercst.observe(targetNode, config);
+
+
+/***** genere url pour serviceLoc *****/
+function serviceLocUrl(serviceName) {
+	return "/outils/serviceLoc.php?name="+serviceName+"&url="+encodeURIComponent(window.location.href)+"&ref="+encodeURIComponent(document.referrer)+"&t="+Date.now();
+}
+
+
+/***** ajoute une classe sur les liens pointant vers la pages courrante *****/
+document.querySelectorAll('a[href="'+document.URL+'"]').forEach(function(elem){elem.classList.add('pageActuelle')});

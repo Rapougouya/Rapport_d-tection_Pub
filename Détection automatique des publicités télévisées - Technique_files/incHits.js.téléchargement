@@ -1,0 +1,9 @@
+const page = document.currentScript.getAttribute('page');
+const id = document.currentScript.getAttribute('id');
+
+// Inc seulement si pas de adb
+if(page && id) {
+	fetch("//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", {method: 'HEAD'}).then(function (response) {
+		if(response.status == 200) fetch("/outils/stats/incHits.php?page="+page+"&id="+id);
+	});
+}
